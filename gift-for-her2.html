@@ -520,7 +520,7 @@
     <p>ถึงอ้วน,</p>
     <p>รักอ้วนนะ คิดถึงมากกกกกก ว่างเลยเขียนเว็บมาให้อ่านจะได้หายคิดถึง</p>
     <p>พักผ่อนเยอะๆนะ กินข้าวด้วย น่าจะเหนื่อยจากซ้อมทุกวัน เค้าเป็นกำลังใจให้นะ สู้สู้ อัยอ้วน ^^</p>
-    <p>ของขวัญชิ้นนี้อาจไม่ได้สวยาก แต่ตั้งใจทำให้นะ อยากให้รู้ว่าพี่รักหนู เลิกเพ้อเจ้อได้แล้วค่ะ</p>
+    <p>ของขวัญชิ้นนี้อาจไม่ได้สวยมาก แต่ตั้งใจทำให้นะ อยากให้รู้ว่าพี่รักหนู เลิกเพ้อเจ้อได้แล้วค่ะ</p>
     <p>kiss kiss na <br>P'f</p>
     <button class="letter-close" id="letterClose">พับกระดาษ</button>
   </div>
@@ -536,7 +536,12 @@
 <div id="music-modal">
   <div class="music-card">
     <div class="music-card-title">มีเพลงมาให้</div>
-    <iframe id="spotifyFrame" style="border-radius:14px" src="" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+   <!-- วางไฟล์เพลงชื่อ music.mp3 ไว้โฟลเดอร์เดียวกับไฟล์นี้ -->
+<audio id="bgMusic" controls loop style="width:100%;">
+    <source src="music.mp3" type="audio/mpeg">
+    เบราว์เซอร์ของคุณไม่รองรับการเล่นเพลง
+</audio>
+    <!==iframe id="spotifyFrame" style="border-radius:14px" src="" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"><!==/iframe>
     <a class="spotify-open-link" href="https://open.spotify.com/track/3ely8ruLcndSzzvKCjRJzg" target="_blank" rel="noopener">เปิดฟังใน Spotify</a>
     <button class="letter-close" id="musicClose">ปิดเพลง</button>
   </div>
@@ -788,21 +793,31 @@ document.getElementById('letterClose').addEventListener('click', ()=>{
   setTimeout(()=>{ envelope.classList.remove('pulled'); }, 150);
 });
 
-/* ---------- CASSETTE / MUSIC (real song via Spotify embed) ---------- */
-const SPOTIFY_TRACK_ID = '3ely8ruLcndSzzvKCjRJzg';
-const musicModal = document.getElementById('music-modal');
-const spotifyFrame = document.getElementById('spotifyFrame');
-document.getElementById('playBtn').addEventListener('click', ()=>{
-  musicModal.classList.add('show');
-  spotifyFrame.src = `https://open.spotify.com/embed/track/${SPOTIFY_TRACK_ID}?utm_source=generator&autoplay=1`;
-  document.getElementById('reelL').classList.add('spin');
-  document.getElementById('reelR').classList.add('spin');
+/* ---------- CASSETTE / MUSIC ---------- */
+
+const musicModal = document.getElementById("music-modal");
+const bgMusic = document.getElementById("bgMusic");
+
+document.getElementById("playBtn").addEventListener("click", async () => {
+
+    musicModal.classList.add("show");
+
+    try {
+        await bgMusic.play();
+    } catch (e) {
+        console.log(e);
+    }
+
+    document.getElementById("reelL").classList.add("spin");
+    document.getElementById("reelR").classList.add("spin");
+
 });
-document.getElementById('musicClose').addEventListener('click', ()=>{
-  musicModal.classList.remove('show');
-  spotifyFrame.src = ''; /* stop playback when closed */
-  document.getElementById('reelL').classList.remove('spin');
-  document.getElementById('reelR').classList.remove('spin');
+
+document.getElementById("musicClose").addEventListener("click", () => {
+
+    // ปิดเฉพาะหน้าต่าง เพลงยังเล่นต่อ
+    musicModal.classList.remove("show");
+
 });
 
 /* ---------- POLAROID photo upload / viewer ---------- */
